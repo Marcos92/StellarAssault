@@ -10,6 +10,7 @@ public class Hero : MonoBehaviour
     bool isPressed;
     LineRenderer line;
     GameObject arrow;
+    GameObject finalPosition;
 
     public Color Color;
 
@@ -19,9 +20,10 @@ public class Hero : MonoBehaviour
         destination = new Vector2();
 
         line = transform.GetComponent<LineRenderer>();
-        line.SetPosition(0, Vector2.zero);
+        line.SetPosition(0, transform.position);
 
         arrow = transform.Find("Arrow").gameObject;
+        finalPosition = transform.Find("Final Position").gameObject;
     }
 
     // Update is called once per frame
@@ -32,18 +34,22 @@ public class Hero : MonoBehaviour
         if (isPressed)
         {
             Vector2 currentMousePos = GetMousePosition();
+            Vector2 transformPositionV2 = transform.position;
 
-            Vector2 direction = currentMousePos;
-            direction.Normalize();
+            Vector2 direction = currentMousePos - transformPositionV2;
 
-            if(currentMousePos.magnitude > maxRange)
+
+            if (direction.sqrMagnitude > maxRange * maxRange)
             {
-                currentMousePos = direction * maxRange;
+                direction.Normalize();
+                currentMousePos = transformPositionV2 + (direction * maxRange);
             }
+
 
             line.SetPosition(1, currentMousePos);
             arrow.transform.position = currentMousePos;
             arrow.transform.rotation = Quaternion.FromToRotation(Vector3.up, direction);
+            destination = currentMousePos;
         }
 
         
@@ -59,7 +65,8 @@ public class Hero : MonoBehaviour
         if (isPressed)
         {
             isPressed = false;
-            destination = GetMousePosition();
+            finalPosition.active = true;
+            finalPosition.transform.position = destination;
         }
     }
 
