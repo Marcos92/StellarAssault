@@ -6,36 +6,58 @@ public class HeroMovement : MonoBehaviour
 {
     Vector2 destination;
     float range;
-    bool isMoving;
+    public float maxRange;
+    bool isPressed;
+    LineRenderer line;
+    GameObject arrow;
 
     // Start is called before the first frame update
     void Start()
     {
         destination = new Vector2();
+
+        line = transform.GetComponent<LineRenderer>();
+        line.SetPosition(0, Vector2.zero);
+
+        arrow = transform.Find("Arrow").gameObject;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(isMoving)
+        line.enabled = arrow.active = isPressed;
+
+        if (isPressed)
         {
-            //draw circle and arrow
+            Vector2 currentMousePos = GetMousePosition();
+
+            Vector2 direction = currentMousePos;
+            direction.Normalize();
+
+            if(currentMousePos.magnitude > maxRange)
+            {
+                currentMousePos = direction * maxRange;
+            }
+
+            line.SetPosition(1, currentMousePos);
+            arrow.transform.position = currentMousePos;
+            arrow.transform.rotation = Quaternion.FromToRotation(Vector3.up, direction);
         }
+
+        
     }
 
     private void OnMouseDown() 
     {
-        isMoving = true;
-        Debug.Log("Mouse down!");
+        isPressed = true;
     }
 
     private void OnMouseUp() 
     {
-        if(isMoving)
+        if (isPressed)
         {
-            isMoving = false;
+            isPressed = false;
             destination = GetMousePosition();
-            Debug.Log("Mouse up!");
         }
     }
 
@@ -43,11 +65,5 @@ public class HeroMovement : MonoBehaviour
     {
         Camera cam = Camera.main;
         return cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, cam.nearClipPlane));
-    }
-
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(new Vector3(destination.x, destination.y, 1), 0.1f);
     }
 }
