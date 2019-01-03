@@ -11,7 +11,7 @@ public class HeroMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        destination = new Vector2();
     }
 
     // Update is called once per frame
@@ -26,6 +26,7 @@ public class HeroMovement : MonoBehaviour
     private void OnMouseDown() 
     {
         isMoving = true;
+        Debug.Log("Mouse down!");
     }
 
     private void OnMouseUp() 
@@ -33,7 +34,20 @@ public class HeroMovement : MonoBehaviour
         if(isMoving)
         {
             isMoving = false;
-            destination = 
+            destination = GetMousePosition();
+            Debug.Log("Mouse up!");
         }
+    }
+
+    private Vector2 GetMousePosition()
+    {
+        Camera cam = Camera.main;
+        return cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, cam.nearClipPlane));
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(new Vector3(destination.x, destination.y, 1), 0.1f);
     }
 }
