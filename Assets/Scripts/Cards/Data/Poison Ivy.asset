@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d035a64565bc34927b474ee0d9c2f392, type: 3}
   m_Name: Poison Ivy
   m_EditorClassIdentifier: 
-  Title: Poison Ivy
-  Description: Deals 5 damage over 10 seconds to all creatures in the cloud!
   Cooldown: 5
   Image: {fileID: 21300000, guid: f2e6ceb5e074e4a2e851b4d2b5cc527e, type: 3}
+  Title: Poison Ivy
+  Description: Deals 5 damage over 10 seconds to all creatures in the cloud!
+  Hero: {fileID: 7848934878758349145, guid: 91f0c973d7c484c2789159ed35cc48ec, type: 3}
+  Target: 2
+  Action: {fileID: 0}

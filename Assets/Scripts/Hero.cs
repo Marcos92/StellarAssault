@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HeroMovement : MonoBehaviour
+public class Hero : MonoBehaviour
 {
     Vector2 destination;
     float range;
@@ -10,6 +10,8 @@ public class HeroMovement : MonoBehaviour
     bool isPressed;
     LineRenderer line;
     GameObject arrow;
+
+    public Color Color;
 
     // Start is called before the first frame update
     void Start()
