@@ -18,6 +18,7 @@ public class Hero : MonoBehaviour
     public float maxMovementRange;
     public float attackRange;
     public float health;
+    float initialHealth;
     public float attackDamage;
     public Color Color;
     public AttackType attackType;
@@ -43,6 +44,9 @@ public class Hero : MonoBehaviour
     Animator animator;
     SpriteRenderer sprite;
 
+    Transform healthBar;
+    float initialHealthBarSize;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -63,6 +67,10 @@ public class Hero : MonoBehaviour
 
         animator = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
+
+        initialHealth = health;
+        healthBar = transform.Find("HealthBar").transform;
+        initialHealthBarSize = healthBar.localScale.x;
 
         //Callback registration
         allSeingEye.RegisterTurnEndCallback(HandleOnTurnEndCallbackDelegate);
@@ -160,6 +168,9 @@ public class Hero : MonoBehaviour
 
     private void HandleOnTurnEndCallbackDelegate(int turnNumber)
     {
+        if(health <= 0)
+            return;
+
         if (newDestination)
         {
             endTurnPosition = transform.position;
@@ -169,6 +180,9 @@ public class Hero : MonoBehaviour
 
     void HandleMovementCallbackDelegate(float step)
     {
+        if(health <= 0)
+            return;
+            
         if (newDestination)
         {
             animator.SetInteger("direction", 1);
@@ -182,6 +196,9 @@ public class Hero : MonoBehaviour
 
     void HandleActionCallbackDelegate()
     {
+        if(health <= 0)
+            return;
+            
         // Already moved, so we can reset newDestination
         if (newDestination)
         {
@@ -239,9 +256,29 @@ public class Hero : MonoBehaviour
         health -= otherAttackPower;
         Debug.Log("[" + name + "] -> Health is now " + health);
 
+        float size;
+
         if (health <= 0)
         {
             OnPlayerDeath();
+            size = 0;
+        }
+        else
+        {
+            size = health * initialHealthBarSize / initialHealth;
+        }
+
+        healthBar.localScale = new Vector2(size, healthBar.localScale.y);
+
+        SpriteRenderer healthSprite = healthBar.GetComponent<SpriteRenderer>();
+
+        if(health / initialHealth <= 0.2)
+        {
+            healthSprite.color = Color.red;
+        }
+        else if(health / initialHealth <= 0.5)
+        {
+            healthSprite.color = Color.yellow;
         }
     }
 
@@ -252,6 +289,9 @@ public class Hero : MonoBehaviour
 
     void HandleActionEndCallbackDelegate()
     {
+        if(health <= 0)
+            return;
+            
         attackOnce = true;
         Animator attackAnimationAnimator = attackAnimation.GetComponent<Animator>();
         attackAnimationAnimator.StopPlayback();
