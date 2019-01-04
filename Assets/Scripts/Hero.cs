@@ -12,6 +12,7 @@ public class Hero : MonoBehaviour
     GameObject arrow;
     GameObject finalPosition;
     All_Seeing_Eye allSeingEye;
+    bool newDestination = false;
 
     public Color Color;
 
@@ -30,10 +31,19 @@ public class Hero : MonoBehaviour
         allSeingEye = GameObject.Find("Illuminatti").gameObject.GetComponent<All_Seeing_Eye>();
         allSeingEye.RegisterTurnEndCallback(HandleOnTurnEndCallbackDelegate);
         allSeingEye.RegisterMovementCallback(HandleMovementCallbackDelegate);
+        allSeingEye.RegisterActionCallback(HandleActionCallbackDelegate);
     }
 
     // Update is called once per frame
     void Update()
+    {
+        if (allSeingEye.GetState() == All_Seeing_Eye.GameState.Turn)
+        {
+            CheckNextHeroDestination();
+        }
+    }
+
+    private void CheckNextHeroDestination()
     {
         line.enabled = isPressed;
         arrow.SetActive(isPressed);
@@ -55,6 +65,11 @@ public class Hero : MonoBehaviour
             arrow.transform.position = currentMousePos;
             arrow.transform.rotation = Quaternion.FromToRotation(Vector3.up, direction);
             destination = currentMousePos;
+
+            if (!newDestination)
+            {
+                newDestination = true;
+            }
         }
     }
 
@@ -68,16 +83,22 @@ public class Hero : MonoBehaviour
 
     private void OnMouseDown() 
     {
-        isPressed = true;
+        if (allSeingEye.GetState() == All_Seeing_Eye.GameState.Turn)
+        {
+            isPressed = true;
+        }
     }
 
     private void OnMouseUp() 
     {
-        if (isPressed)
+        if (allSeingEye.GetState() == All_Seeing_Eye.GameState.Turn)
         {
-            isPressed = false;
-            finalPosition.SetActive(true);
-            finalPosition.transform.position = destination;
+            if (isPressed)
+            {
+                isPressed = false;
+                finalPosition.SetActive(true);
+                finalPosition.transform.position = destination;
+            }
         }
     }
 
@@ -89,18 +110,29 @@ public class Hero : MonoBehaviour
 
     private void HandleOnTurnEndCallbackDelegate(int turnNumber)
     {
-        endTurnPosition = transform.position;
-        line.SetPosition(0, destination);
-        finalPosition.SetActive(false);
+        if (newDestination)
+        {
+            endTurnPosition = transform.position;
+            line.SetPosition(0, destination);
+            finalPosition.SetActive(false);
+        }
     }
 
     void HandleMovementCallbackDelegate(float step)
     {
-        Debug.Log("Updating position to: " + step);
-        Vector2 transformPositionV2 = transform.position;
-        Vector2 direction = destination - endTurnPosition;
-        direction.Normalize();
-        transform.position = endTurnPosition + (direction * step);
+        if (newDestination)
+        {
+            Vector2 transformPositionV2 = transform.position;
+            Vector2 direction = destination - endTurnPosition;
+            direction.Normalize();
+            transform.position = endTurnPosition + (direction * step);
+        }
+    }
+
+    void HandleActionCallbackDelegate()
+    {
+        // Already moved, so we can reset newDestination
+        newDestination = false;
     }
 
 }
