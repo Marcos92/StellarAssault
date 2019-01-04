@@ -171,6 +171,7 @@ GameObject:
   - component: {fileID: 115938280829397009}
   - component: {fileID: 1660011308}
   - component: {fileID: 1660011309}
+  - component: {fileID: 8990314235206077876}
   m_Layer: 8
   m_Name: HeroPrefab
   m_TagString: Untagged
@@ -254,8 +255,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fc3c9b66d0864b108f16c017a6d385d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxRange: 1
+  maxMovementRange: 1
+  attackRange: 0.75
   Color: {r: 0.11532295, g: 1, b: 0, a: 1}
+  attackType: 0
 --- !u!61 &1660011308
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -386,3 +389,22 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!95 &8990314235206077876
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7287091045954485766}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 95483082f94844f03a4d0b258380012e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

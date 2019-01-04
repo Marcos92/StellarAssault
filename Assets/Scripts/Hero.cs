@@ -33,7 +33,6 @@ public class Hero : MonoBehaviour
 
     // Attack
     bool attackOnce = true;
-    GameObject attackAnimation;
 
     // Manager
     All_Seeing_Eye allSeingEye;
@@ -49,7 +48,6 @@ public class Hero : MonoBehaviour
         line.endColor = Color;
 
         arrow = transform.Find("Arrow").gameObject;
-        attackAnimation = transform.Find("Attack_Anim").gameObject;
 
         finalPosition = transform.Find("Final Position").gameObject;
         allSeingEye = GameObject.Find("Illuminatti").gameObject.GetComponent<All_Seeing_Eye>();
@@ -201,18 +199,15 @@ public class Hero : MonoBehaviour
     void HandleActionEndCallbackDelegate()
     {
         attackOnce = true;
-        Animator attackAnimationAnimator = attackAnimation.GetComponent<Animator>();
+        Animator attackAnimationAnimator = GetComponent<Animator>();
         attackAnimationAnimator.StopPlayback();
-        attackAnimation.SetActive(false);
+        attackAnimationAnimator.enabled = false;
     }
 
 
     void AnimateAttack()
     {
-        attackAnimation.transform.position = transform.position;
-        attackAnimation.SetActive(true);
-
-        Animator attackAnimationAnimator = attackAnimation.GetComponent<Animator>();
+        Animator attackAnimationAnimator = GetComponent<Animator>();
         attackAnimationAnimator.Play("Attac", -1, 0.0f);
     }
 
