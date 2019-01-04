@@ -18,4 +18,4 @@ MonoBehaviour:
   Description: Damages and slows enemy heroes, halving their movement for one turn.
   Hero: {fileID: 0}
   Target: 0
-  Ability: {fileID: 0}
+  Ability: {fileID: 11400000, guid: 9fb8fc26e9bf948f0b836df1d06c4aa1, type: 2}

@@ -18,4 +18,4 @@ MonoBehaviour:
   Description: 'Smash the ground after moving dealing 30pt of area damage. '
   Hero: {fileID: 4737078444884337283, guid: 4379735e45c8f40ccb4fd691c61a2b6b, type: 3}
   Target: 3
-  Ability: {fileID: 0}
+  Ability: {fileID: 11400000, guid: 11ec4c51393344f799bc84905e911d54, type: 2}

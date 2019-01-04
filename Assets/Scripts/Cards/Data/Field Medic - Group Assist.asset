@@ -19,4 +19,4 @@ MonoBehaviour:
     turns.
   Hero: {fileID: 3917680472238562460, guid: 705ed59b56fee4eb296448d34d2552a0, type: 3}
   Target: 3
-  Ability: {fileID: 0}
+  Ability: {fileID: 11400000, guid: f6b0233e73b0e48cdabdfa707daf8e07, type: 2}

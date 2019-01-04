@@ -16,17 +16,17 @@ public class GameCard : MonoBehaviour
     public GameObject CoolDownText = null;
     public GameObject CardFace = null;
     public Color DefaultSpellColor;
-
     private Transform Target;
-
     private Color CardColor;
 
     LineRenderer line;
     Vector2 finalPosition;
 
-    
+    private All_Seeing_Eye allSeingEye;
 
     bool isPressed;
+
+    bool isAvailable = true;
 
     public GameCard(CardData cardData)
     {
@@ -36,12 +36,29 @@ public class GameCard : MonoBehaviour
 
     void Start() {
         PopulateCard(CardData);
+        RegisterStateMachine();
+    }
+
+    private void RegisterStateMachine() {
+        allSeingEye = GameObject.Find("Illuminatti").gameObject.GetComponent<All_Seeing_Eye>();
+        allSeingEye.RegisterTurnEndCallback(HandleOnTurnEndCallbackDelegate);
+        allSeingEye.RegisterActionEndCallback(HandleTurnStartCallbackDelegate);
+    }
+
+    private void HandleTurnStartCallbackDelegate() {
+
+    }
+
+    private void HandleOnTurnEndCallbackDelegate(int turnNumber) {
+
     }
 
     private void OnMouseDown() 
     {
-        Target = null;
-        isPressed = true;
+        if (isAvailable){
+            Target = null;
+            isPressed = true;
+        }
     }
 
     private void OnMouseUp() 
@@ -56,7 +73,7 @@ public class GameCard : MonoBehaviour
     }
 
     private void Execute(Transform target, CardAbility ability) {
-        Debug.Log($"Target {target.name} got hit by {ability.Name} for {ability.HealthChange} healing points.");
+        Debug.Log($"Target {target.name} got hit by {ability.name} for {ability.HealthChange} healing points.");
     }
 
     void Update()

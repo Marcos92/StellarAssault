@@ -19,4 +19,4 @@ MonoBehaviour:
     2 turns, dealing damage to heroes who cross it.
   Hero: {fileID: 0}
   Target: 0
-  Ability: {fileID: 0}
+  Ability: {fileID: 11400000, guid: 5afb903f28e784b52a92052198ebced9, type: 2}

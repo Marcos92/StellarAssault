@@ -18,4 +18,4 @@ MonoBehaviour:
   Description: Shoot 4 projectiles after moving that deal 10pt of damage each.
   Hero: {fileID: 9174032660720593844, guid: 2fbd37367f2d043fb9513d4eadb0cd9a, type: 3}
   Target: 2
-  Ability: {fileID: 0}
+  Ability: {fileID: 11400000, guid: a7e48f19bc5ff4c89be3aaf78751fd17, type: 2}
