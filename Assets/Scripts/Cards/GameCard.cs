@@ -15,8 +15,11 @@ public class GameCard : MonoBehaviour
     public GameObject ImageContainer = null;
     public GameObject CoolDownText = null;
     public GameObject CardFace = null;
+    public GameObject TargetMarker = null;
     public Color DefaultSpellColor;
     private Transform Target;
+
+    private Vector2 TargetLocation;
     private Color CardColor;
 
     LineRenderer line;
@@ -42,20 +45,18 @@ public class GameCard : MonoBehaviour
     private void RegisterStateMachine() {
         allSeingEye = GameObject.Find("Illuminatti").gameObject.GetComponent<All_Seeing_Eye>();
         allSeingEye.RegisterTurnEndCallback(HandleOnTurnEndCallbackDelegate);
-        allSeingEye.RegisterActionEndCallback(HandleTurnStartCallbackDelegate);
-    }
-
-    private void HandleTurnStartCallbackDelegate() {
-
+        allSeingEye.RegisterMovementEndCallback(HandleActionStartCallbackDelegate);
     }
 
     private void HandleOnTurnEndCallbackDelegate(int turnNumber) {
 
     }
 
+    private void HandleActionStartCallbackDelegate() {
+    }
+
     private void OnMouseDown() 
     {
-        Debug.Log("OnMouseDown:" + isDisable);
         if (!isDisable){
             Target = null;
             isPressed = true;
@@ -67,9 +68,6 @@ public class GameCard : MonoBehaviour
         if (isPressed)
         {
             isPressed = false;
-            if (Target && CardData.Ability) {
-                Execute(Target, CardData.Ability);
-            }
         }
     }
 
@@ -79,33 +77,56 @@ public class GameCard : MonoBehaviour
 
     void Update()
     {
-        line.enabled = isPressed;
+        if (line) line.enabled = isPressed;
 
         if (isPressed)
         {
-            Vector2 currentMousePos = GetMousePosition();
-            Vector2 transformPositionV2 = transform.position;
-            Vector2 direction = currentMousePos - transformPositionV2;
-            line.SetPosition(1, currentMousePos);
-            finalPosition = currentMousePos;
-
-            Vector2 mouseWorldCoordinates = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(mouseWorldCoordinates, Vector2.zero);
-            
-            if (hit.transform != null) 
+            Debug.Log(CardData.Target);
+            switch (CardData.Target)
             {
-                if (hit.transform.gameObject.tag == CardData.Target.ToString()){
-                    Target = hit.transform;
-                }
-            } else if (Target != null){
-                Target.gameObject.GetComponent<Hero>().ClearHighlight();
-                Target = null;
+                case CardTarget.Allies:
+                case CardTarget.Enemies:
+                    SetCharacterMouseTarget();
+                    break;
+                case CardTarget.World:
+                    SetWorldTarget();
+                    break;
+                case CardTarget.Self:
+                default:
+                    TargetLocation = CardData.Hero.transform.position;
+                    break;
             }
-
             if (Target != null){
                 Target.gameObject.GetComponent<Hero>().Highlight(CardColor);
             }
         }
+    }
+
+    private void SetWorldTarget() {
+        TargetLocation = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        TargetMarker.transform.position = TargetLocation;
+    }
+
+    private void SetCharacterMouseTarget() {
+        Debug.Log("SetCharacterMouseTarget");
+        Vector2 currentMousePos = GetMousePosition();
+        Vector2 transformPositionV2 = transform.position;
+        Vector2 direction = currentMousePos - transformPositionV2;
+        if (line) line.SetPosition(1, currentMousePos);
+        finalPosition = currentMousePos;
+
+        Vector2 mouseWorldCoordinates = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        RaycastHit2D hit = Physics2D.Raycast(mouseWorldCoordinates, Vector2.zero);
+        
+        if (hit.transform != null) 
+        {
+            if (hit.transform.gameObject.tag == CardData.Target.ToString()){
+                Target = hit.transform;
+            }
+        } else if (Target != null){
+            Target.gameObject.GetComponent<Hero>().ClearHighlight();
+        }
+        Target = null;
     }
 
     private void PopulateCard(CardData cardData){
@@ -119,16 +140,21 @@ public class GameCard : MonoBehaviour
             CardFace.GetComponent<Image>().color = cardData.Hero.Color;
         }
 
-        line = transform.GetComponent<LineRenderer>();
-        line.SetPosition(0, transform.position);
-
         if (cardData.Hero != null && cardData.Hero.Color != null) {
             CardColor = cardData.Hero.Color;
         } else {
             CardColor = DefaultSpellColor;
         }
-        line.startColor = CardColor;
-        line.endColor = new Color(0,0,0,0);
+
+        if (cardData.Target == CardTarget.Allies || cardData.Target == CardTarget.Enemies){
+            line = transform.GetComponent<LineRenderer>();
+            line.SetPosition(0, transform.position);
+            line.startColor = CardColor;
+            line.endColor = new Color(0,0,0,0.5f);
+        }
+
+        
+        TargetMarker.transform.GetComponent<SpriteRenderer>().color = CardColor;
     }
 
     private Vector2 GetMousePosition()
