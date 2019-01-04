@@ -8,13 +8,19 @@ using UnityEngine.UI;
 public class GameCard : MonoBehaviour
 {
     [SerializeField]
-    private int Hero = 0;
+    
     public CardData CardData = null;
     public GameObject TitleText = null;
     public GameObject DescriptionText = null;
     public GameObject ImageContainer = null;
     public GameObject CoolDownText = null;
     public GameObject CardFace = null;
+
+    public GameCard(CardData cardData)
+    {
+        CardData = cardData;
+        PopulateCard(CardData);
+    }
 
     void Start() => PopulateCard(CardData);
 
@@ -23,14 +29,14 @@ public class GameCard : MonoBehaviour
         DescriptionText.GetComponent<Text>().text = cardData.Description;
         CoolDownText.GetComponent<Text>().text = cardData.Cooldown.ToString();
         ImageContainer.GetComponent<Image>().sprite = cardData.Image;
-        if (cardData.Hero) {
-            
+        if (cardData.Hero != null && cardData.Hero.Color != null) {
+            CardFace.GetComponent<Image>().color = cardData.Hero.Color;
         }
     }
 
-    public GameCard(CardData cardData)
-    {
-        CardData = cardData;
-        PopulateCard(CardData);
+    private void Cast() {
+        if (CardData != null && CardData.Ability != null){
+            CardData.Ability.Execute();
+        }
     }
 }

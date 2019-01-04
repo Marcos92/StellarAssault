@@ -12,6 +12,10 @@ public class CardData : ScriptableObject
 
     public string Description = "This is the card Description";
 
-    public GameObject Hero = null;
+    public Hero Hero = null;
+
+    public CardTarget Target = CardTarget.World;
+
+    public ICardAbility Ability = null;
     
 }

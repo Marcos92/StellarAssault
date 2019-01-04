@@ -305,7 +305,7 @@ PrefabInstance:
         type: 3}
       propertyPath: CardData
       value: 
-      objectReference: {fileID: 11400000, guid: 5381e3fa6253c459bb1703ba6a4a32f3,
+      objectReference: {fileID: 11400000, guid: a9a1231e9dec1408bacfd803db2bef1b,
         type: 2}
     - target: {fileID: 5332005363408032889, guid: 61ab408da7fee477e9681fce3705115c,
         type: 3}
@@ -356,6 +356,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Card Face
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332005364281408938, guid: 61ab408da7fee477e9681fce3705115c,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332005364281408938, guid: 61ab408da7fee477e9681fce3705115c,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332005364281408938, guid: 61ab408da7fee477e9681fce3705115c,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332005364281408938, guid: 61ab408da7fee477e9681fce3705115c,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5332005363617401416, guid: 61ab408da7fee477e9681fce3705115c,
         type: 3}
