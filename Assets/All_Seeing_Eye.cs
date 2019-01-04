@@ -8,15 +8,17 @@ public class All_Seeing_Eye : MonoBehaviour
     public float movementTime;
     public float actionsTime;
 
-    enum GameState
+    public enum GameState
     {
         Turn,
         Movement,
         Actions
     }
 
+    public GameState GetState() { return _state; }
+
     private int turnNumber = 0;
-    private GameState _state = GameState.Turn;
+    private GameState _state { get; set; }
     private float startTime;
 
     public delegate void OnTurnEndCallbackDelegate(int turnNumber);
@@ -80,7 +82,6 @@ public class All_Seeing_Eye : MonoBehaviour
 
     public void RegisterTurnEndCallback(OnTurnEndCallbackDelegate callback)
     {
-        Debug.Log("Adding new callback!");
         _turnEndCallbacks.Add(callback);
     }
 

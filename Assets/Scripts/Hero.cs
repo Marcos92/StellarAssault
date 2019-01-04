@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Hero : MonoBehaviour
 {
+    Vector2 direction;
     Vector2 destination;
     Vector2 endTurnPosition;
     public float maxRange;
@@ -13,6 +14,7 @@ public class Hero : MonoBehaviour
     GameObject arrow;
     GameObject finalPosition;
     All_Seeing_Eye allSeingEye;
+    bool newDestination = false;
 
     public Color Color;
 
@@ -31,10 +33,19 @@ public class Hero : MonoBehaviour
         allSeingEye = GameObject.Find("Illuminatti").gameObject.GetComponent<All_Seeing_Eye>();
         allSeingEye.RegisterTurnEndCallback(HandleOnTurnEndCallbackDelegate);
         allSeingEye.RegisterMovementCallback(HandleMovementCallbackDelegate);
+        allSeingEye.RegisterActionCallback(HandleActionCallbackDelegate);
     }
 
     // Update is called once per frame
     void Update()
+    {
+        if (allSeingEye.GetState() == All_Seeing_Eye.GameState.Turn)
+        {
+            CheckNextHeroDestination();
+        }
+    }
+
+    private void CheckNextHeroDestination()
     {
         line.enabled = isPressed;
         arrow.SetActive(isPressed);
@@ -44,7 +55,7 @@ public class Hero : MonoBehaviour
             Vector2 currentMousePos = GetMousePosition();
             Vector2 transformPositionV2 = transform.position;
 
-            Vector2 direction = currentMousePos - transformPositionV2;
+            direction = currentMousePos - transformPositionV2;
 
             if (direction.sqrMagnitude > maxRange * maxRange)
             {
@@ -55,7 +66,19 @@ public class Hero : MonoBehaviour
             line.SetPosition(1, currentMousePos);
             arrow.transform.position = currentMousePos;
             arrow.transform.rotation = Quaternion.FromToRotation(Vector3.up, direction);
-            destination = currentMousePos;
+
+            //Debug.Log(isBlocked);
+
+            if(!isBlocked)
+            {
+                destination = currentMousePos;
+                //Debug.Log(destination);
+            }
+
+            if (!newDestination)
+            {
+                newDestination = true;
+            }
         }
     }
 
@@ -72,27 +95,27 @@ public class Hero : MonoBehaviour
             return;
 
         LayerMask mask = LayerMask.GetMask("Obstacle");
-        RaycastHit2D hit = Physics2D.Raycast(destination, Vector2.up, maxRange, mask);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, maxRange, mask);
         isBlocked = hit.collider != null && hit.collider.transform != transform;
-        Debug.DrawRay(transform.position, transform.TransformDirection(destination) * maxRange, Color.green);
+        Debug.DrawRay(transform.position, hit.point, Color.green);
+        Debug.Log(hit.collider.transform.gameObject.name);
     }
 
     private void OnMouseDown() 
     {
-        isPressed = true;
+        if (allSeingEye.GetState() == All_Seeing_Eye.GameState.Turn)
+        {
+            isPressed = true;
+        }
     }
 
     private void OnMouseUp() 
     {
-        if (isPressed)
+        if (allSeingEye.GetState() == All_Seeing_Eye.GameState.Turn && isPressed)
         {
             isPressed = false;
-
-            if(!isBlocked)
-            {
-                finalPosition.SetActive(true);
-                finalPosition.transform.position = destination;
-            }
+            finalPosition.SetActive(true);
+            finalPosition.transform.position = destination;
         }
     }
 
@@ -104,18 +127,29 @@ public class Hero : MonoBehaviour
 
     private void HandleOnTurnEndCallbackDelegate(int turnNumber)
     {
-        endTurnPosition = transform.position;
-        line.SetPosition(0, destination);
-        finalPosition.SetActive(false);
+        if (newDestination)
+        {
+            endTurnPosition = transform.position;
+            line.SetPosition(0, transform.position);
+            finalPosition.SetActive(false);
+        }
     }
 
     void HandleMovementCallbackDelegate(float step)
     {
-        Debug.Log("Updating position to: " + step);
-        Vector2 transformPositionV2 = transform.position;
-        Vector2 direction = destination - endTurnPosition;
-        direction.Normalize();
-        transform.position = endTurnPosition + (direction * step);
+        if (newDestination)
+        {
+            Vector2 transformPositionV2 = transform.position;
+            Vector2 direction = destination - endTurnPosition;
+            direction.Normalize();
+            transform.position = endTurnPosition + (direction * step);
+        }
+    }
+
+    void HandleActionCallbackDelegate()
+    {
+        // Already moved, so we can reset newDestination
+        newDestination = false;
     }
 
 }
