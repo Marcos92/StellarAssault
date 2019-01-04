@@ -26,7 +26,7 @@ public class GameCard : MonoBehaviour
 
     bool isPressed;
 
-    bool isAvailable = true;
+    bool isDisable;
 
     public GameCard(CardData cardData)
     {
@@ -55,7 +55,8 @@ public class GameCard : MonoBehaviour
 
     private void OnMouseDown() 
     {
-        if (isAvailable){
+        Debug.Log("OnMouseDown:" + isDisable);
+        if (!isDisable){
             Target = null;
             isPressed = true;
         }
