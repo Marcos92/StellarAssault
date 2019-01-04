@@ -213,8 +213,7 @@ public class Hero : MonoBehaviour
 
     void AnimateAttack()
     {
-        Animator attackAnimationAnimator = GetComponent<Animator>();
-        attackAnimationAnimator.Play("Attac", -1, 0.0f);
+        
         attackAnimation.transform.position = transform.position;
         attackAnimation.SetActive(true);
 
