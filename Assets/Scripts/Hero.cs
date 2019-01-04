@@ -80,7 +80,7 @@ public class Hero : MonoBehaviour
             Vector2 currentMousePos = GetMousePosition();
             Vector2 transformPositionV2 = transform.position;
 
-            Vector2 direction = currentMousePos - transformPositionV2;
+            direction = currentMousePos - transformPositionV2;
 
             if (direction.sqrMagnitude > maxMovementRange * maxMovementRange)
             {
@@ -91,11 +91,15 @@ public class Hero : MonoBehaviour
             line.SetPosition(1, currentMousePos);
             arrow.transform.position = currentMousePos;
             arrow.transform.rotation = Quaternion.FromToRotation(Vector3.up, direction);
-            destination = currentMousePos;
 
             if (!newDestination)
             {
                 newDestination = true;
+            }
+
+            if (!isBlocked)
+            {
+                destination = currentMousePos;
             }
         }
     }
@@ -106,6 +110,17 @@ public class Hero : MonoBehaviour
 
     public void ClearHighlight() {
         transform.GetComponent<SpriteRenderer>().color = Color.white;
+    }
+
+    private void FixedUpdate() {
+        if(!isPressed)
+            return;
+
+        LayerMask mask = LayerMask.GetMask("Obstacle");
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, maxMovementRange, mask);
+        isBlocked = hit.collider != null && hit.collider.transform != transform;
+        Debug.Log("Is blocked" + isBlocked);
+        Debug.DrawRay(transform.position, hit.point, Color.green);
     }
 
     private void OnMouseDown() 
