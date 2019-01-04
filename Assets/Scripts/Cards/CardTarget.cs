@@ -7,5 +7,6 @@ public enum CardTarget
 {
     World,
     Allies,
-    Enemies
+    Enemies,
+    Self
 }

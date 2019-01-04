@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d035a64565bc34927b474ee0d9c2f392, type: 3}
-  m_Name: Lightning Bolt
+  m_Name: Spell - Adrenaline Rush
   m_EditorClassIdentifier: 
-  Cooldown: 2
-  Image: {fileID: 21300000, guid: 4cd47559dfd5741178d8d9610b8520f9, type: 3}
-  Title: Lightning Bolt
-  Description: Deals 3 damage to a target and adjacent creatures
+  Cooldown: 3
+  Image: {fileID: 21300000, guid: 104000bf2d514462a9c0e963863ed4bf, type: 3}
+  Title: Adrenaline Rush
+  Description: Boosts movement & damage (+30%) of allied heroes in an area for one
+    turn.
   Hero: {fileID: 0}
-  Target: 2
-  Action: {fileID: 0}
+  Target: 0
+  Ability: {fileID: 0}

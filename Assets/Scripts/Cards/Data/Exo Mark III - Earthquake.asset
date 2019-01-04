@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d035a64565bc34927b474ee0d9c2f392, type: 3}
-  m_Name: Fireball
+  m_Name: Exo Mark III - Earthquake
   m_EditorClassIdentifier: 
-  Cooldown: 3
-  Image: {fileID: 21300000, guid: 5628a2298e841405696b7643bc0e34a8, type: 3}
-  Title: Fireball
-  Description: Deal 6 damage to a creature.
-  Hero: {fileID: 9174032660720593844, guid: 2fbd37367f2d043fb9513d4eadb0cd9a, type: 3}
-  Target: 1
+  Cooldown: 2
+  Image: {fileID: 21300000, guid: 812eb4420b9c94ee4882551dc151380f, type: 3}
+  Title: Hearthquake
+  Description: 'Smash the ground after moving dealing 30pt of area damage. '
+  Hero: {fileID: 4737078444884337283, guid: 4379735e45c8f40ccb4fd691c61a2b6b, type: 3}
+  Target: 3
+  Ability: {fileID: 0}

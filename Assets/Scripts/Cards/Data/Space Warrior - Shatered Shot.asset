@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d035a64565bc34927b474ee0d9c2f392, type: 3}
-  m_Name: Healing Touch
+  m_Name: Space Warrior - Shatered Shot
   m_EditorClassIdentifier: 
-  Cooldown: 4
-  Image: {fileID: 21300000, guid: 6ee669073c3744b0e9e8695a47538a17, type: 3}
-  Title: Helaing Spiral
-  Description: Heals all creatures in the spiral vortex
-  Hero: {fileID: 0}
-  Target: 1
-  Ability: {fileID: 11400000, guid: 11ec4c51393344f799bc84905e911d54, type: 2}
+  Cooldown: 3
+  Image: {fileID: 21300000, guid: 35162d30def504924b5e605c767c5712, type: 3}
+  Title: Shatered Shot
+  Description: Shoot 4 projectiles after moving that deal 10pt of damage each.
+  Hero: {fileID: 9174032660720593844, guid: 2fbd37367f2d043fb9513d4eadb0cd9a, type: 3}
+  Target: 2
+  Ability: {fileID: 0}
