@@ -355,7 +355,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxMovementRange: 1
-  attackRange: 0.75
+  attackRange: 0.6
+  health: 75
+  attackDamage: 15
   Color: {r: 0.11532295, g: 1, b: 0, a: 1}
   attackType: 0
 --- !u!61 &1660011308
