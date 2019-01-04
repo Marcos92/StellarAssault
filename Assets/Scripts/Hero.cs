@@ -8,6 +8,7 @@ public class Hero : MonoBehaviour
     Vector2 endTurnPosition;
     public float maxRange;
     bool isPressed;
+    bool isBlocked;
     LineRenderer line;
     GameObject arrow;
     GameObject finalPosition;
@@ -65,6 +66,16 @@ public class Hero : MonoBehaviour
     public void ClearHighlight() {
         transform.GetComponent<SpriteRenderer>().color = Color.white;
     }
+    
+    private void FixedUpdate() {
+        if(!isPressed)
+            return;
+
+        LayerMask mask = LayerMask.GetMask("Obstacle");
+        RaycastHit2D hit = Physics2D.Raycast(destination, Vector2.up, maxRange, mask);
+        isBlocked = hit.collider != null && hit.collider.transform != transform;
+        Debug.DrawRay(transform.position, transform.TransformDirection(destination) * maxRange, Color.green);
+    }
 
     private void OnMouseDown() 
     {
@@ -76,8 +87,12 @@ public class Hero : MonoBehaviour
         if (isPressed)
         {
             isPressed = false;
-            finalPosition.SetActive(true);
-            finalPosition.transform.position = destination;
+
+            if(!isBlocked)
+            {
+                finalPosition.SetActive(true);
+                finalPosition.transform.position = destination;
+            }
         }
     }
 
