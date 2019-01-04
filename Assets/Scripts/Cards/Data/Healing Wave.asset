@@ -10,12 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d035a64565bc34927b474ee0d9c2f392, type: 3}
-  m_Name: Poison Ivy
+  m_Name: Healing Wave
   m_EditorClassIdentifier: 
-  Cooldown: 5
-  DefaultColor: {r: 99, g: 71, b: 41, a: 1}
-  Image: {fileID: 21300000, guid: f2e6ceb5e074e4a2e851b4d2b5cc527e, type: 3}
-  Title: Poison Ivy
-  Description: Deals 5 damage over 10 seconds to all creatures in the cloud!
-  Hero: {fileID: 4737078444884337283, guid: 4379735e45c8f40ccb4fd691c61a2b6b, type: 3}
-  Target: 2
+  Cooldown: 0
+  Image: {fileID: 0}
+  Title: Game Card Title
+  Description: This is the card Description
+  Hero: {fileID: 0}
+  Target: 0

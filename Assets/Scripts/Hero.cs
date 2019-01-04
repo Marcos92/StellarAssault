@@ -21,6 +21,8 @@ public class Hero : MonoBehaviour
 
         line = transform.GetComponent<LineRenderer>();
         line.SetPosition(0, transform.position);
+        line.startColor = Color.black;
+        line.endColor = Color;
 
         arrow = transform.Find("Arrow").gameObject;
         finalPosition = transform.Find("Final Position").gameObject;
@@ -38,21 +40,25 @@ public class Hero : MonoBehaviour
 
             Vector2 direction = currentMousePos - transformPositionV2;
 
-
             if (direction.sqrMagnitude > maxRange * maxRange)
             {
                 direction.Normalize();
                 currentMousePos = transformPositionV2 + (direction * maxRange);
             }
 
-
             line.SetPosition(1, currentMousePos);
             arrow.transform.position = currentMousePos;
             arrow.transform.rotation = Quaternion.FromToRotation(Vector3.up, direction);
             destination = currentMousePos;
         }
+    }
 
-        
+    public void Highlight(Color spellColor) {
+        transform.GetComponent<SpriteRenderer>().color = spellColor;
+    }
+
+    public void ClearHighlight() {
+        transform.GetComponent<SpriteRenderer>().color = Color.white;
     }
 
     private void OnMouseDown() 

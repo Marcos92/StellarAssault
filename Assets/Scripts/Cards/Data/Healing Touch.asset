@@ -16,6 +16,6 @@ MonoBehaviour:
   Image: {fileID: 21300000, guid: 6ee669073c3744b0e9e8695a47538a17, type: 3}
   Title: Helaing Spiral
   Description: Heals all creatures in the spiral vortex
-  Hero: {fileID: 115938280829397009, guid: 91f0c973d7c484c2789159ed35cc48ec, type: 3}
-  Target: 0
-  Action: {fileID: 11400000, guid: ad4b0de95c4b44ec3aeb48f4b554d14f, type: 2}
+  Hero: {fileID: 0}
+  Target: 1
+  Ability: {fileID: 11400000, guid: 11ec4c51393344f799bc84905e911d54, type: 2}

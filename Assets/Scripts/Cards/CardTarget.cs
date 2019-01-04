@@ -5,7 +5,7 @@ using UnityEngine;
 
 public enum CardTarget 
 {
-    Allies = 0,
-    Enemies = 1,
-    World = 2
+    World,
+    Allies,
+    Enemies
 }
