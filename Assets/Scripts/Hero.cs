@@ -33,6 +33,7 @@ public class Hero : MonoBehaviour
 
     // Attack
     bool attackOnce = true;
+    GameObject attackAnimation;
 
     // Manager
     All_Seeing_Eye allSeingEye;
@@ -48,6 +49,8 @@ public class Hero : MonoBehaviour
         line.endColor = Color;
 
         arrow = transform.Find("Arrow").gameObject;
+
+        attackAnimation = transform.Find("Attack_Anim").gameObject;
 
         finalPosition = transform.Find("Final Position").gameObject;
         allSeingEye = GameObject.Find("Illuminatti").gameObject.GetComponent<All_Seeing_Eye>();
@@ -102,6 +105,11 @@ public class Hero : MonoBehaviour
             {
                 newDestination = true;
             }
+
+            if (!isBlocked)
+            {
+                destination = currentMousePos;
+            }
         }
     }
 
@@ -120,8 +128,6 @@ public class Hero : MonoBehaviour
         LayerMask mask = LayerMask.GetMask("Obstacle");
         RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, maxMovementRange, mask);
         isBlocked = hit.collider != null && hit.collider.transform != transform;
-        Debug.DrawRay(transform.position, hit.point, Color.green);
-        Debug.Log(hit.collider.transform.gameObject.name);
     }
 
     private void OnMouseDown() 
@@ -208,6 +214,11 @@ public class Hero : MonoBehaviour
     void AnimateAttack()
     {
         Animator attackAnimationAnimator = GetComponent<Animator>();
+        attackAnimationAnimator.Play("Attac", -1, 0.0f);
+        attackAnimation.transform.position = transform.position;
+        attackAnimation.SetActive(true);
+
+        Animator attackAnimationAnimator = attackAnimation.GetComponent<Animator>();
         attackAnimationAnimator.Play("Attac", -1, 0.0f);
     }
 
