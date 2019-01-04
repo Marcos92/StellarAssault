@@ -17,6 +17,8 @@ public class Hero : MonoBehaviour
     // Characteristics
     public float maxMovementRange;
     public float attackRange;
+    public float health;
+    public float attackDamage;
     public Color Color;
     public AttackType attackType;
 
@@ -53,6 +55,7 @@ public class Hero : MonoBehaviour
         attackAnimation = transform.Find("Attack_Anim").gameObject;
 
         finalPosition = transform.Find("Final Position").gameObject;
+
         allSeingEye = GameObject.Find("Illuminatti").gameObject.GetComponent<All_Seeing_Eye>();
 
         //Callback registration
@@ -191,10 +194,51 @@ public class Hero : MonoBehaviour
         switch(attackType)
         {
             case AttackType.CircleAttack:
+                String tagToFind = "Enemies";
+                if (tag == "Enemies")
+                {
+                    tagToFind = "Allies";
+                }
+                GameObject[] heroes = GameObject.FindGameObjectsWithTag(tagToFind);
+                foreach(GameObject hero in heroes)
+                {
+                    Hero heroScript = hero.GetComponent<Hero>();
+                    if (heroScript != null)
+                    {
+                        if (heroScript.NextToPlayer(transform.position, attackRange)) {
+                            Debug.Log("[" + name + "] " + " -> (" + heroScript.name + ") is next to me");
+                            heroScript.DoDamage(attackDamage);
+                        }
+                    }
+                }
+
+
                 break;
             default:
                 break;
         }
+    }
+
+    public bool NextToPlayer(Vector2 otherPosition, float otherAttackRange)
+    {
+        float distance = Vector2.Distance(otherPosition, transform.position);
+        return distance < otherAttackRange;
+    }
+
+    public void DoDamage(float otherAttackPower)
+    {
+        health -= otherAttackPower;
+        Debug.Log("[" + name + "] -> Health is now " + health);
+
+        if (health <= 0)
+        {
+            OnPlayerDeath();
+        }
+    }
+
+    private void OnPlayerDeath()
+    {
+        //throw new NotImplementedNarcoException();
     }
 
     void HandleActionEndCallbackDelegate()
