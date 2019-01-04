@@ -105,11 +105,6 @@ public class Hero : MonoBehaviour
             {
                 newDestination = true;
             }
-
-            if (!isBlocked)
-            {
-                destination = currentMousePos;
-            }
         }
     }
 
@@ -159,7 +154,6 @@ public class Hero : MonoBehaviour
         if (newDestination)
         {
             endTurnPosition = transform.position;
-            line.SetPosition(0, transform.position);
             finalPosition.SetActive(false);
         }
     }
@@ -169,9 +163,9 @@ public class Hero : MonoBehaviour
         if (newDestination)
         {
             Vector2 transformPositionV2 = transform.position;
-            Vector2 direction = destination - endTurnPosition;
-            direction.Normalize();
-            transform.position = endTurnPosition + (direction * step);
+            Vector2 playerDirection = destination - endTurnPosition;
+            playerDirection.Normalize();
+            transform.position = endTurnPosition + (playerDirection * step);
         }
     }
 
@@ -180,6 +174,7 @@ public class Hero : MonoBehaviour
         // Already moved, so we can reset newDestination
         if (newDestination)
         {
+            line.SetPosition(0, transform.position);
             newDestination = false;
         }
 
@@ -205,15 +200,14 @@ public class Hero : MonoBehaviour
     void HandleActionEndCallbackDelegate()
     {
         attackOnce = true;
-        Animator attackAnimationAnimator = GetComponent<Animator>();
+        Animator attackAnimationAnimator = attackAnimation.GetComponent<Animator>();
         attackAnimationAnimator.StopPlayback();
-        attackAnimationAnimator.enabled = false;
+        attackAnimation.SetActive(false);
     }
 
 
     void AnimateAttack()
     {
-        
         attackAnimation.transform.position = transform.position;
         attackAnimation.SetActive(true);
 
