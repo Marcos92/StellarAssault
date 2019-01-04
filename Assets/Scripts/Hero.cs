@@ -5,12 +5,13 @@ using UnityEngine;
 public class Hero : MonoBehaviour
 {
     Vector2 destination;
-    float range;
+    Vector2 endTurnPosition;
     public float maxRange;
     bool isPressed;
     LineRenderer line;
     GameObject arrow;
     GameObject finalPosition;
+    All_Seeing_Eye allSeingEye;
 
     public Color Color;
 
@@ -26,12 +27,16 @@ public class Hero : MonoBehaviour
 
         arrow = transform.Find("Arrow").gameObject;
         finalPosition = transform.Find("Final Position").gameObject;
+        allSeingEye = GameObject.Find("Illuminatti").gameObject.GetComponent<All_Seeing_Eye>();
+        allSeingEye.RegisterTurnEndCallback(HandleOnTurnEndCallbackDelegate);
+        allSeingEye.RegisterMovementCallback(HandleMovementCallbackDelegate);
     }
 
     // Update is called once per frame
     void Update()
     {
-        line.enabled = arrow.active = isPressed;
+        line.enabled = isPressed;
+        arrow.SetActive(isPressed);
 
         if (isPressed)
         {
@@ -71,7 +76,7 @@ public class Hero : MonoBehaviour
         if (isPressed)
         {
             isPressed = false;
-            finalPosition.active = true;
+            finalPosition.SetActive(true);
             finalPosition.transform.position = destination;
         }
     }
@@ -81,4 +86,21 @@ public class Hero : MonoBehaviour
         Camera cam = Camera.main;
         return cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, cam.nearClipPlane));
     }
+
+    private void HandleOnTurnEndCallbackDelegate(int turnNumber)
+    {
+        endTurnPosition = transform.position;
+        line.SetPosition(0, destination);
+        finalPosition.SetActive(false);
+    }
+
+    void HandleMovementCallbackDelegate(float step)
+    {
+        Debug.Log("Updating position to: " + step);
+        Vector2 transformPositionV2 = transform.position;
+        Vector2 direction = destination - endTurnPosition;
+        direction.Normalize();
+        transform.position = endTurnPosition + (direction * step);
+    }
+
 }
