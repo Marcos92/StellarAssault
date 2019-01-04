@@ -107,20 +107,6 @@ public class Hero : MonoBehaviour
     public void ClearHighlight() {
         transform.GetComponent<SpriteRenderer>().color = Color.white;
     }
-<<<<<<< HEAD
-=======
-    
-    private void FixedUpdate() {
-        if(!isPressed)
-            return;
-
-        LayerMask mask = LayerMask.GetMask("Obstacle");
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, maxMovementRange, mask);
-        isBlocked = hit.collider != null && hit.collider.transform != transform;
-        Debug.DrawRay(transform.position, hit.point, Color.green);
-        Debug.Log(hit.collider.transform.gameObject.name);
-    }
->>>>>>> 7c05bf4... Add attack animation
 
     private void OnMouseDown() 
     {
