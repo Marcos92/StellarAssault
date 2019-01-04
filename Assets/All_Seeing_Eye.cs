@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,7 +22,8 @@ public class All_Seeing_Eye : MonoBehaviour
     private GameState _state { get; set; }
     private float startTime;
 
-    public delegate void OnTurnEndCallbackDelegate(int turnNumber);
+    public delegate void TurnTickCallbackDelegate(float turnPercentage);
+    public delegate void TurnEndCallbackDelegate(int turnNumber);
 
     public delegate void MovementCallbackDelegate(float step);
     public delegate void MovementEndCallbackDelegate();
@@ -29,7 +31,8 @@ public class All_Seeing_Eye : MonoBehaviour
     public delegate void ActionCallbackDelegate();
     public delegate void ActionEndCallbackDelegate();
 
-    private List<OnTurnEndCallbackDelegate> _turnEndCallbacks = new List<OnTurnEndCallbackDelegate>();
+    private List<TurnTickCallbackDelegate> _turnTickCallbacks = new List<TurnTickCallbackDelegate>();
+    private List<TurnEndCallbackDelegate> _turnEndCallbacks = new List<TurnEndCallbackDelegate>();
 
     private List<MovementCallbackDelegate> _movementCallbacks = new List<MovementCallbackDelegate>();
     private List<MovementEndCallbackDelegate> _movementEndCallbacks = new List<MovementEndCallbackDelegate>();
@@ -54,6 +57,14 @@ public class All_Seeing_Eye : MonoBehaviour
                 {
                     ProceedToMovementState();
                 }
+
+                float turnPerc = elapsedTime / turnTime;
+
+                if (turnPerc >= 1.0f) 
+                {
+                    turnPerc = 1.0f; 
+                }
+                TickTurn(turnPerc);
                 break;
             case GameState.Movement:
                 if ((elapsedTime - movementTime) >= 0)
@@ -80,7 +91,12 @@ public class All_Seeing_Eye : MonoBehaviour
 
     #region Callbacks
 
-    public void RegisterTurnEndCallback(OnTurnEndCallbackDelegate callback)
+    public void RegisterTurnTickCallback(TurnTickCallbackDelegate callback)
+    {
+        _turnTickCallbacks.Add(callback);
+    }
+
+    public void RegisterTurnEndCallback(TurnEndCallbackDelegate callback)
     {
         _turnEndCallbacks.Add(callback);
     }
@@ -114,7 +130,7 @@ public class All_Seeing_Eye : MonoBehaviour
     {
         GoToState(GameState.Movement);
 
-        foreach (OnTurnEndCallbackDelegate callback in _turnEndCallbacks)
+        foreach (TurnEndCallbackDelegate callback in _turnEndCallbacks)
         {
             callback(turnNumber++);
         }
@@ -147,6 +163,14 @@ public class All_Seeing_Eye : MonoBehaviour
     }
 
     #endregion
+
+    private void TickTurn(float v)
+    {
+        foreach(TurnTickCallbackDelegate callback in _turnTickCallbacks)
+        {
+            callback(v);
+        }
+    }
 
     private void MoveElements(float step)
     {
