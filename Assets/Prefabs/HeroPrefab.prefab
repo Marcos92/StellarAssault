@@ -270,7 +270,6 @@ GameObject:
   - component: {fileID: 115938280829397009}
   - component: {fileID: 1660011308}
   - component: {fileID: 1660011309}
-  - component: {fileID: 8990314235206077876}
   m_Layer: 8
   m_Name: HeroPrefab
   m_TagString: Untagged
@@ -287,7 +286,7 @@ Transform:
   m_GameObject: {fileID: 7287091045954485766}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.08, y: 0.08, z: 1}
+  m_LocalScale: {x: 0.09231251, y: 0.079296395, z: 1}
   m_Children:
   - {fileID: 1798967019}
   - {fileID: 1274781975}
@@ -489,22 +488,3 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
---- !u!95 &8990314235206077876
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7287091045954485766}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 95483082f94844f03a4d0b258380012e, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
