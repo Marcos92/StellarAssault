@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1274781975}
   - component: {fileID: 1274781976}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Final Position
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89,7 +89,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1798967019}
   - component: {fileID: 1798967020}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -171,7 +171,7 @@ GameObject:
   - component: {fileID: 115938280829397009}
   - component: {fileID: 1660011308}
   - component: {fileID: 1660011309}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HeroPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -187,7 +187,7 @@ Transform:
   m_GameObject: {fileID: 7287091045954485766}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.080002494, y: 0.09580848, z: 0.206226}
+  m_LocalScale: {x: 0.08, y: 0.08, z: 1}
   m_Children:
   - {fileID: 1798967019}
   - {fileID: 1274781975}

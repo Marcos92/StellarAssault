@@ -1,20 +1,42 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Hero : MonoBehaviour
 {
+    // Enums
+    public enum AttackType
+    {
+        CircleAttack,
+        ConeAttack,
+        DonnutAttack,
+        LineAttack
+    };
+
+    // Characteristics
+    public float maxMovementRange;
+    public float attackRange;
+    public Color Color;
+    public AttackType attackType;
+
+    // Movement
     Vector2 destination;
     Vector2 endTurnPosition;
-    public float maxRange;
-    bool isPressed;
+    Vector2 direction;
     LineRenderer line;
     GameObject arrow;
     GameObject finalPosition;
-    All_Seeing_Eye allSeingEye;
     bool newDestination = false;
+    bool isPressed;
+    bool isBlocked;
 
-    public Color Color;
+    // Attack
+    bool attackOnce = true;
+    GameObject attackAnimation;
+
+    // Manager
+    All_Seeing_Eye allSeingEye;
 
     // Start is called before the first frame update
     void Start()
@@ -27,11 +49,16 @@ public class Hero : MonoBehaviour
         line.endColor = Color;
 
         arrow = transform.Find("Arrow").gameObject;
+        attackAnimation = transform.Find("Attack_Anim").gameObject;
+
         finalPosition = transform.Find("Final Position").gameObject;
         allSeingEye = GameObject.Find("Illuminatti").gameObject.GetComponent<All_Seeing_Eye>();
+
+        //Callback registration
         allSeingEye.RegisterTurnEndCallback(HandleOnTurnEndCallbackDelegate);
         allSeingEye.RegisterMovementCallback(HandleMovementCallbackDelegate);
         allSeingEye.RegisterActionCallback(HandleActionCallbackDelegate);
+        allSeingEye.RegisterActionEndCallback(HandleActionEndCallbackDelegate);
     }
 
     // Update is called once per frame
@@ -53,18 +80,25 @@ public class Hero : MonoBehaviour
             Vector2 currentMousePos = GetMousePosition();
             Vector2 transformPositionV2 = transform.position;
 
-            Vector2 direction = currentMousePos - transformPositionV2;
+            direction = currentMousePos - transformPositionV2;
 
-            if (direction.sqrMagnitude > maxRange * maxRange)
+            if (direction.sqrMagnitude > maxMovementRange * maxMovementRange)
             {
                 direction.Normalize();
-                currentMousePos = transformPositionV2 + (direction * maxRange);
+                currentMousePos = transformPositionV2 + (direction * maxMovementRange);
             }
 
             line.SetPosition(1, currentMousePos);
             arrow.transform.position = currentMousePos;
             arrow.transform.rotation = Quaternion.FromToRotation(Vector3.up, direction);
-            destination = currentMousePos;
+
+            //Debug.Log(isBlocked);
+
+            if(!isBlocked)
+            {
+                destination = currentMousePos;
+                //Debug.Log(destination);
+            }
 
             if (!newDestination)
             {
@@ -80,6 +114,17 @@ public class Hero : MonoBehaviour
     public void ClearHighlight() {
         transform.GetComponent<SpriteRenderer>().color = Color.white;
     }
+    
+    private void FixedUpdate() {
+        if(!isPressed)
+            return;
+
+        LayerMask mask = LayerMask.GetMask("Obstacle");
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, maxMovementRange, mask);
+        isBlocked = hit.collider != null && hit.collider.transform != transform;
+        Debug.DrawRay(transform.position, hit.point, Color.green);
+        Debug.Log(hit.collider.transform.gameObject.name);
+    }
 
     private void OnMouseDown() 
     {
@@ -91,14 +136,11 @@ public class Hero : MonoBehaviour
 
     private void OnMouseUp() 
     {
-        if (allSeingEye.GetState() == All_Seeing_Eye.GameState.Turn)
+        if (allSeingEye.GetState() == All_Seeing_Eye.GameState.Turn && isPressed)
         {
-            if (isPressed)
-            {
-                isPressed = false;
-                finalPosition.SetActive(true);
-                finalPosition.transform.position = destination;
-            }
+            isPressed = false;
+            finalPosition.SetActive(true);
+            finalPosition.transform.position = destination;
         }
     }
 
@@ -113,7 +155,7 @@ public class Hero : MonoBehaviour
         if (newDestination)
         {
             endTurnPosition = transform.position;
-            line.SetPosition(0, destination);
+            line.SetPosition(0, transform.position);
             finalPosition.SetActive(false);
         }
     }
@@ -132,7 +174,46 @@ public class Hero : MonoBehaviour
     void HandleActionCallbackDelegate()
     {
         // Already moved, so we can reset newDestination
-        newDestination = false;
+        if (newDestination)
+        {
+            newDestination = false;
+        }
+
+        if (attackOnce)
+        {
+            attackOnce = false;
+            AnimateAttack();
+            ApplyAttackOnArea();
+        }
+    }
+
+    private void ApplyAttackOnArea()
+    {
+        switch(attackType)
+        {
+            case AttackType.CircleAttack:
+                break;
+            default:
+                break;
+        }
+    }
+
+    void HandleActionEndCallbackDelegate()
+    {
+        attackOnce = true;
+        Animator attackAnimationAnimator = attackAnimation.GetComponent<Animator>();
+        attackAnimationAnimator.StopPlayback();
+        attackAnimation.SetActive(false);
+    }
+
+
+    void AnimateAttack()
+    {
+        attackAnimation.transform.position = transform.position;
+        attackAnimation.SetActive(true);
+
+        Animator attackAnimationAnimator = attackAnimation.GetComponent<Animator>();
+        attackAnimationAnimator.Play("Attac", -1, 0.0f);
     }
 
 }
