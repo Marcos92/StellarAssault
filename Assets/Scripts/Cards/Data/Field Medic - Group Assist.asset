@@ -10,11 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d035a64565bc34927b474ee0d9c2f392, type: 3}
-  m_Name: Healing Wave
+  m_Name: Field Medic - Group Assist
   m_EditorClassIdentifier: 
-  Cooldown: 0
-  Image: {fileID: 0}
-  Title: Game Card Title
-  Description: This is the card Description
-  Hero: {fileID: 0}
-  Target: 0
+  Cooldown: 3
+  Image: {fileID: 21300000, guid: 71c8985a9782244cf98b493b032bb7ef, type: 3}
+  Title: Group Assist
+  Description: Allied heroes in the area around the Healer regain health, lasts 2
+    turns.
+  Hero: {fileID: 3917680472238562460, guid: 705ed59b56fee4eb296448d34d2552a0, type: 3}
+  Target: 3
+  Ability: {fileID: 0}

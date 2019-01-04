@@ -3,6 +3,7 @@ using UnityEngine;
 public class CardAbility : ScriptableObject{
 
     public string Name = "Ability Name";
+    [TextArea]
     public string Description = "Flavour Text";
     public int HealthChange = 0;
     public int SpeedChange = 0;

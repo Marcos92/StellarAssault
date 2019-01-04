@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d035a64565bc34927b474ee0d9c2f392, type: 3}
-  m_Name: Dragon Fire Breath
+  m_Name: Spell - Space Strike
   m_EditorClassIdentifier: 
-  Cooldown: 0
-  Image: {fileID: 0}
-  Title: Game Card Title
-  Description: This is the card Description
+  Cooldown: 4
+  Image: {fileID: 21300000, guid: b503feab30cb94b1184a7e46301cb125, type: 3}
+  Title: Space Strike
+  Description: Deals damage in an area upon impact, then leaves the area burning for
+    2 turns, dealing damage to heroes who cross it.
   Hero: {fileID: 0}
-  Target: 2
-  Action: {fileID: 0}
+  Target: 0
+  Ability: {fileID: 0}
