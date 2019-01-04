@@ -40,6 +40,9 @@ public class Hero : MonoBehaviour
     // Manager
     All_Seeing_Eye allSeingEye;
 
+    Animator animator;
+    SpriteRenderer sprite;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -57,6 +60,9 @@ public class Hero : MonoBehaviour
         finalPosition = transform.Find("Final Position").gameObject;
 
         allSeingEye = GameObject.Find("Illuminatti").gameObject.GetComponent<All_Seeing_Eye>();
+
+        animator = GetComponent<Animator>();
+        sprite = GetComponent<SpriteRenderer>();
 
         //Callback registration
         allSeingEye.RegisterTurnEndCallback(HandleOnTurnEndCallbackDelegate);
@@ -165,6 +171,8 @@ public class Hero : MonoBehaviour
     {
         if (newDestination)
         {
+            animator.SetInteger("direction", 1);
+            sprite.flipX = destination.x < 0;
             Vector2 transformPositionV2 = transform.position;
             Vector2 playerDirection = destination - endTurnPosition;
             playerDirection.Normalize();
@@ -179,6 +187,7 @@ public class Hero : MonoBehaviour
         {
             line.SetPosition(0, transform.position);
             newDestination = false;
+            animator.SetInteger("direction", 0);
         }
 
         if (attackOnce)
@@ -238,7 +247,7 @@ public class Hero : MonoBehaviour
 
     private void OnPlayerDeath()
     {
-        //throw new NotImplementedNarcoException();
+        animator.SetBool("die", true);
     }
 
     void HandleActionEndCallbackDelegate()
@@ -257,6 +266,8 @@ public class Hero : MonoBehaviour
 
         Animator attackAnimationAnimator = attackAnimation.GetComponent<Animator>();
         attackAnimationAnimator.Play("Attac", -1, 0.0f);
+
+        animator.SetTrigger("attack");
     }
 
 }
